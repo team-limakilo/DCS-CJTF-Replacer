@@ -110,6 +110,7 @@ end
 -- Escapes backslashes and quotes in strings
 local function sanitize(str)
     str = str:gsub('\\', '\\\\')
+    str = str:gsub('\n', '\\\n')
     str = str:gsub('"', '\\"')
     return str
 end
