@@ -124,17 +124,12 @@ local function serialize(data, indent, name, top)
     elseif type(data) == "table" then
         local buf = string.format('\n%s{', indent)
         local newindent = indent.."    "
-        -- Output numeric keys first
-        for k, v in ipairs(data) do
-            buf = string.format('%s\n%s[%s] = %s,',
-                buf, newindent, k, serialize(v, newindent, k, false))
-        end
-        -- And string keys last
         for k, v in pairs(data) do
             if type(k) == "string" then
-                buf = string.format('%s\n%s["%s"] = %s,',
-                    buf, newindent, k, serialize(v, newindent, k, false))
+                k = '"'..k..'"'
             end
+            buf = string.format('%s\n%s[%s] = %s,',
+                buf, newindent, tostring(k), serialize(v, newindent, k, false))
         end
         if top then
             return string.format('%s\n%s} -- end of %s', buf, indent, name)
